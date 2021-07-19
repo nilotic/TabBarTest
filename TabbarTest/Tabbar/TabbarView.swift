@@ -34,28 +34,63 @@ struct TabbarView: View {
                 NavigationView {
                     TabView(selection: $selection) {
                         NavigationLink(destination: depth2View, tag: TabbarType.graph1.rawValue, selection: $selectionIndex) {
-                            depth2Button
+                            ZStack {
+                                Rectangle()
+                                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)), .red]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                                
+                                Button(action: {
+                                    selectionIndex = 0
+                                    isAccessoryViewHidden = true
+                                    
+                                }) { pushButton }
+                            }
                         }
                         .tabItem {
                             TabBarItem(type: .graph1, selection: $selection)
+                                .onAppear {
+                                    withAnimation {
+                                        isAccessoryViewHidden = false
+                                    }
+                                }
                         }
                         .tag(TabbarType.graph1)
                         .background(TabBar { tabBarHeight = $0.bounds.height - proxy.safeAreaInsets.bottom })
                         
                         
-                        Rectangle()
-                            .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)), .orange]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .tabItem {
-                                TabBarItem(type: .graph2, selection: $selection)
+                        NavigationLink(destination: depth2View, tag: TabbarType.graph2.rawValue, selection: $selectionIndex) {
+                            ZStack {
+                                Rectangle()
+                                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)), .orange]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                                
+                                Button(action: {
+                                    selectionIndex = 1
+                                    isAccessoryViewHidden = true
+                                    
+                                }) { pushButton }
                             }
-                            .tag(TabbarType.graph2)
+                        }
+                        .tabItem {
+                            TabBarItem(type: .graph2, selection: $selection)
+                        }
+                        .tag(TabbarType.graph2)
                         
-                        Rectangle()
-                            .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)), .yellow]), startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .tabItem {
-                                TabBarItem(type: .graph3, selection: $selection)
+                        
+                        NavigationLink(destination: depth2View, tag: TabbarType.graph3.rawValue, selection: $selectionIndex) {
+                            ZStack {
+                                Rectangle()
+                                    .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)), .yellow]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                                
+                                Button(action: {
+                                    selectionIndex = 2
+                                    isAccessoryViewHidden = true
+                                    
+                                }) { pushButton }
                             }
-                            .tag(TabbarType.graph3)
+                        }
+                        .tabItem {
+                            TabBarItem(type: .graph3, selection: $selection)
+                        }
+                        .tag(TabbarType.graph3)
                         
                         
                         Rectangle()
@@ -74,17 +109,15 @@ struct TabbarView: View {
                     }
                     .navigationTitle(selection.title)
                 }
-                .onAppear {
-                    isAccessoryViewHidden = false
-                }
-                
                 
                 if !isAccessoryViewHidden {
                     TabBarAccessoryView(data: $selection, tabBarHeight: $tabBarHeight)
+                        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
                 }
             }
         }
     }
+
     
     // MARK: Private
     private var depth2View: some View {
@@ -98,21 +131,15 @@ struct TabbarView: View {
         .navigationTitle("Depth 2")
     }
     
-    private var depth2Button: some View {
-        ZStack {
-            Rectangle()
-                .fill(LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)), .red]), startPoint: .topLeading, endPoint: .bottomTrailing))
+    private var pushButton: some View {
+        Text("Push")
+            .foregroundColor(.white)
+            .font(.system(size: 30, weight: .bold))
+            .padding(20)
+            .background(Color.blue)
+            .clipShape(RoundedCorner(radius: 20, corners: .allCorners))
+            .padding(.bottom, 300)
             
-            Button(action: {
-                selectionIndex = 0
-                isAccessoryViewHidden = true
-                
-            }) {
-                Text("Depth 2")
-                    .foregroundColor(.white)
-                    .font(.system(size: 40, weight: .bold))
-            }
-        }
     }
 }
 
