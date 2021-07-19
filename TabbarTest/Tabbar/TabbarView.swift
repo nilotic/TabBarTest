@@ -109,6 +109,7 @@ struct TabbarView: View {
                     }
                     .navigationTitle(selection.title)
                 }
+                .navigationViewStyle(StackNavigationViewStyle())
                 
                 if !isAccessoryViewHidden {
                     TabBarAccessoryView(data: $selection, tabBarHeight: $tabBarHeight)
